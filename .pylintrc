@@ -1,0 +1,18 @@
+[MASTER]
+load-plugins=pylint_django
+
+[MESSAGES CONTROL]
+# Disable Django-specific false positives
+disable=
+    # Django models have dynamic attributes that pylint can't detect
+    no-member,
+    # Django convention for models
+    too-few-public-methods,
+
+[BASIC]
+# Allow Django model naming conventions
+good-names=id,pk,
+
+[DESIGN]
+# Django models often have many attributes
+max-attributes=15

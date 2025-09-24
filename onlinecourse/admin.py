@@ -1,30 +1,56 @@
-from django.contrib import admin
-# <HINT> Import any new Models here
-from .models import Course, Lesson, Instructor, Learner
+"""
+Django admin configuration for the online course application.
 
-# <HINT> Register QuestionInline and ChoiceInline classes here
+This module defines the admin interface for managing courses, lessons, 
+questions, choices, instructors, learners, and submissions.
+"""
+
+from django.contrib import admin
+from .models import Course, Lesson, Instructor, Learner, Question, Choice, Submission
 
 
 class LessonInline(admin.StackedInline):
+    """Inline admin for lessons within course admin."""
     model = Lesson
     extra = 5
 
 
-# Register your models here.
+class ChoiceInline(admin.StackedInline):
+    """Inline admin for choices within question admin."""
+    model = Choice
+    extra = 2
+
+
+class QuestionInline(admin.StackedInline):
+    """Inline admin for questions within course admin."""
+    model = Question
+    extra = 2
+
+
 class CourseAdmin(admin.ModelAdmin):
+    """Admin configuration for Course model."""
     inlines = [LessonInline]
     list_display = ('name', 'pub_date')
     list_filter = ['pub_date']
     search_fields = ['name', 'description']
 
 
+class QuestionAdmin(admin.ModelAdmin):
+    """Admin configuration for Question model."""
+    inlines = [ChoiceInline]
+    list_display = ['content']
+
+
 class LessonAdmin(admin.ModelAdmin):
+    """Admin configuration for Lesson model."""
     list_display = ['title']
 
 
-# <HINT> Register Question and Choice models here
-
+# Register models with admin
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(Instructor)
 admin.site.register(Learner)
+admin.site.register(Question, QuestionAdmin)
+admin.site.register(Choice)
+admin.site.register(Submission)
